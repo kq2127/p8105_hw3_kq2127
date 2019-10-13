@@ -1,0 +1,26 @@
+---
+title: "p8105_hw3_kq2127"
+author: "Kristal Quispe"
+date: "10/12/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(readxl)
+library(p8105.datasets)
+```
+
+## Problem 1
+
+```{r}
+data("instacart")
+```
+
+## Problem 2
+```{r}
+data("brfss_smart2010")
+```
+
