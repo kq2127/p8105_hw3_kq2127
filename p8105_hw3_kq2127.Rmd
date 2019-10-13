@@ -39,6 +39,7 @@ instacart %>%
     breaks = c(1000, 50000, 150000)
   )
 
+#look into font size
 
 instacart %>%
   group_by(aisle_id, product_name) %>%
@@ -50,7 +51,17 @@ instacart %>%
   knitr::kable()
 
 
-  
+instacart %>% 
+  filter(product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream" ) %>% 
+  group_by(product_name, order_dow) %>% 
+  summarize(
+    mean_hod = mean(order_hour_of_day)
+         )%>% 
+  pivot_wider(names_from = order_dow, values_from = mean_hod)
+
+
+
+
 
  ## sum(x[,'n_obs'])
 
