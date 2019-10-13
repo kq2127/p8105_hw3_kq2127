@@ -17,7 +17,36 @@ library(p8105.datasets)
 
 ```{r}
 data("instacart")
+
+instacart %>% 
+  group_by(aisle_id) %>% 
+  summarize(n_obs = n()) %>% 
+  arrange(desc(n_obs))
+
+instacart %>%
+  group_by(aisle_id) %>%
+  summarize(n_obs = n()) %>% 
+  filter(n_obs > 1000) %>% 
+  ggplot(aes(x = aisle_id, y = n_obs)) + 
+    geom_point(color = "red", alpha = .5) +
+  labs(
+    title = "Items Ordered per Aisle",
+    x = "Aisle ID",
+    y = "Items Ordered (#)"
+  )+
+  scale_y_continuous(
+    breaks = c(1000, 50000, 150000)
+  )
+
+instacart %>% 
+  group_by()
+
+ ## sum(x[,'n_obs'])
+
 ```
+
+Data set instacart has 1384617 observations and 15 variables.There are 134 aisles, and aisle number 83 has the most items ordered from (150609).
+
 
 ## Problem 2
 ```{r}
