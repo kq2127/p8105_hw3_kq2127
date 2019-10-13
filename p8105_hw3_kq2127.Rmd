@@ -38,8 +38,10 @@ instacart %>%
     breaks = c(1000, 50000, 150000)
   )
 
-instacart %>% 
-  group_by()
+instacart %>%
+  group_by(aisle_id, product_name) %>%
+  summarize(n_obs = n()) %>% 
+  arrange(aisle_id, desc(n_obs))
 
  ## sum(x[,'n_obs'])
 
