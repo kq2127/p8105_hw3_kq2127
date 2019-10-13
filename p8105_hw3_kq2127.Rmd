@@ -23,6 +23,7 @@ instacart %>%
   summarize(n_obs = n()) %>% 
   arrange(desc(n_obs))
 
+
 instacart %>%
   group_by(aisle_id) %>%
   summarize(n_obs = n()) %>% 
@@ -38,12 +39,21 @@ instacart %>%
     breaks = c(1000, 50000, 150000)
   )
 
+
 instacart %>%
   group_by(aisle_id, product_name) %>%
   summarize(n_obs = n()) %>% 
-  arrange(aisle_id, desc(n_obs))
+  arrange(aisle_id, desc(n_obs)) %>% 
+  mutate(rank = min_rank(-n_obs)) %>% 
+  filter(rank == 1 | rank ==2 | rank ==3) %>% 
+  select(Aisle = aisle_id, Product = product_name, Count = n_obs) %>% 
+  knitr::kable()
+
+
+  
 
  ## sum(x[,'n_obs'])
+
 
 ```
 
