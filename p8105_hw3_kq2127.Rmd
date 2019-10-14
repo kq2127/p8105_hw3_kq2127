@@ -163,10 +163,15 @@ pb3_df =
 After loading the accel data set and tidying it we end up with pb3_df data set. This data set has 35 observations with 1444 variables. The variables in this data set include: week, day_id, day, day_type, and multiple activity variables ranging from activity_1 to activity_1440. 
 
 ```{r}
-##pb_df = 
-##  mutate(mean_activity = colMeans(activity_1:activity_1440, na.rm = TRUE, dims = 1))
-
+pb3_df %>% 
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "minute_of_day", 
+    names_prefix = "activity_",
+    values_to = "activity") %>% 
+  group_by(week, day_id, day, day_type) %>% 
+  summarize(total_activity = sum(activity)) %>% 
+  knitr::kable()
 ```
 
-aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
-
+Some trends I noticed were that Fridays have the most actiivty while saturdays have the least activity. The patient was more active during the first 3 weeks compared to the last two weeks of the study.
