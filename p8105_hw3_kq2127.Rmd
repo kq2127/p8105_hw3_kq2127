@@ -19,10 +19,13 @@ library(p8105.datasets)
 data("instacart")
 
 instacart %>% 
-  group_by(aisle_id) %>% 
+  group_by(aisle_id, aisle) %>% 
   summarize(n_obs = n()) %>% 
   arrange(desc(n_obs))
+```
+Data set instacart has 1384617 observations and 15 variables.There are 134 aisles, and aisle number 83 (fresh vegetables) has the most items ordered from (150609).
 
+```{r}
 
 instacart %>%
   group_by(aisle_id) %>%
@@ -41,30 +44,47 @@ instacart %>%
 
 #look into font size
 
+```
+
+
+```{r}
 instacart %>%
-  group_by(aisle_id, product_name) %>%
+  filter(aisle == "baking ingredients" | aisle == "dog food care" | aisle == "packaged vegetables fruits") %>% 
+  group_by(aisle, product_name) %>%
   summarize(n_obs = n()) %>% 
-  arrange(aisle_id, desc(n_obs)) %>% 
+  arrange(aisle, desc(n_obs)) %>% 
   mutate(rank = min_rank(-n_obs)) %>% 
   filter(rank == 1 | rank ==2 | rank ==3) %>% 
-  select(Aisle = aisle_id, Product = product_name, Count = n_obs) %>% 
+  select(Aisle = aisle, Product = product_name, Count = n_obs) %>% 
   knitr::kable()
-
-
-instacart %>% 
-  filter(product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream" ) %>% 
-  group_by(product_name, order_dow) %>% 
-  summarize(
-    mean_hod = mean(order_hour_of_day)
-         )%>% 
-  pivot_wider(names_from = order_dow, values_from = mean_hod)%>% 
-  knitr::kable()
-
-# need to add a mutate with sun-sat for 0-6
 
 ```
 
-Data set instacart has 1384617 observations and 15 variables.There are 134 aisles, and aisle number 83 has the most items ordered from (150609).
+
+```{r}
+
+instacart %>% 
+  filter(product_name == "Pink Lady Apples" | product_name == "Coffee Ice Cream" ) %>% 
+  mutate(
+    day = recode(
+      order_dow,
+      "0" = "Sunday",
+      "1" = "Monday",
+      "2" = "Tuesday",
+      "3" = "Wednesday",
+      "4" = "Thursday",
+      "5" = "Friday",
+      "6" = "Saturday")) %>% 
+  group_by(product_name, day) %>% 
+  summarize(
+    mean_hod = mean(order_hour_of_day)
+         )%>% 
+  pivot_wider(names_from = day, values_from = mean_hod)%>% 
+  select(product_name, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday) %>% 
+  knitr::kable()
+
+
+```
 
 
 ## Problem 2
@@ -123,7 +143,7 @@ pb2_df %>%
 
 ## Problem 3
 
-
+Load, tidy and wrangle data. 
 ```{r}
 pb3_df = 
   read_csv(
@@ -138,4 +158,13 @@ pb3_df =
   select(week, day_id, day, day_type, everything())
 
 ```
+After loading the accel data set and tidying it we end up with pb3_df data set. This data set has 35 observations with 1444 variables. The variables in this data set include: week, day_id, day, day_type, and multiple activity variables ranging from activity_1 to activity_1440. 
+
+```{r}
+##pb_df = 
+##  mutate(mean_activity = colMeans(activity_1:activity_1440, na.rm = TRUE, dims = 1))
+
+```
+
+aggregate accross minutes to create a total activity variable for each day, and create a table showing these totals. Are any trends apparent?
 
