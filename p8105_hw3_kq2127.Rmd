@@ -34,7 +34,7 @@ instacart %>%
     title = "Items Ordered per Aisle",
     x = "Aisle ID",
     y = "Items Ordered (#)"
-  )+
+  ) +
   scale_y_continuous(
     breaks = c(1000, 50000, 150000)
   )
@@ -57,14 +57,10 @@ instacart %>%
   summarize(
     mean_hod = mean(order_hour_of_day)
          )%>% 
-  pivot_wider(names_from = order_dow, values_from = mean_hod)
+  pivot_wider(names_from = order_dow, values_from = mean_hod)%>% 
+  knitr::kable()
 
-
-
-
-
- ## sum(x[,'n_obs'])
-
+# need to add a mutate with sun-sat for 0-6
 
 ```
 
@@ -72,7 +68,74 @@ Data set instacart has 1384617 observations and 15 variables.There are 134 aisle
 
 
 ## Problem 2
+
+Data Cleaning 
 ```{r}
 data("brfss_smart2010")
+
+pb2_df =
+  brfss_smart2010 %>% 
+  janitor::clean_names() %>% 
+  filter(topic == "Overall Health", response %in% c ("Poor", "Fair", "Good", "Excellent")) %>% 
+  mutate(response = as.factor(response)) 
+
+```
+
+Using the dataset...
+```{r}
+pb2_df %>% 
+  filter( year == 2002) %>% 
+  group_by(locationabbr) %>%
+  summarize(
+    n_unique = n_distinct(locationdesc))%>%  
+  filter(n_unique >= 7)
+
+pb2_df %>% 
+  filter( year == 2010) %>% 
+  group_by(locationabbr) %>%
+  summarize(
+    n_unique = n_distinct(locationdesc))%>%  
+  filter(n_unique >= 7)
+
+```
+
+In 2002 the following states were observed at 7 or more locations: CT, FL, MA, NC, NJ and PA. In 2010 the following states were observed at 7 or more locations:CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX and WA. 
+```{r}
+pb2_df %>% 
+  filter(response == "Excellent") %>% 
+  group_by(year, locationabbr) %>% 
+  summarize(mean_dv = mean(data_value)) %>% 
+  ggplot(aes(x = year, y = mean_dv, color = locationabbr)) + 
+  geom_point() +
+  geom_line() + 
+  theme(legend.position = "bottom")
+```
+
+
+```{r}
+pb2_df %>% 
+  filter( year == 2006 | year == 2010, locationabbr == "NY") %>%
+  ggplot(aes(x = response, y = data_value, color = year)) + 
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) + 
+  facet_grid(~ year)
+```
+
+## Problem 3
+
+
+```{r}
+pb3_df = 
+  read_csv(
+    file = "./data/accel_data.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    day_type = case_when(
+      day  %in% c ("Saturday", "Sunday") ~ "Weekend",
+      day  %in% c ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday",
+      TRUE      ~"" 
+    )) %>% 
+  select(week, day_id, day, day_type, everything())
+
 ```
 
