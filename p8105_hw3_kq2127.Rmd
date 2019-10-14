@@ -24,7 +24,7 @@ instacart %>%
   arrange(desc(n_obs))
 ```
 Data set instacart has 1384617 observations and 15 variables.
-There are 134 aisles, and aisle number 83 (fresh vegetables) has the most items ordered from (150609).
+There are 134 aisles, and aisle number 83 (fresh vegetables) has the most items ordered from (150609). This data set describes different grocery orders and the most important variables are order_id and product_id becuase together they make a unique key/identifier. Other important variables are ones we manipulated in the problem: order_dow, aisle_id,aisle, product_id, product_name and order_hour_of_day.
 
 ```{r}
 
@@ -128,7 +128,10 @@ pb2_df %>%
   ggplot(aes(x = year, y = mean_dv, color = locationabbr)) + 
   geom_point() +
   geom_line() + 
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom" ) + labs( 
+    x = "Year",
+    y = "Mean Data Value"
+  ) 
 ```
 
 
@@ -138,7 +141,11 @@ pb2_df %>%
   ggplot(aes(x = response, y = data_value, color = year)) + 
   geom_point(alpha = .5) +
   geom_smooth(se = FALSE) + 
-  facet_grid(~ year)
+  facet_grid(~ year) + labs( 
+    x = "Response",
+    y = "Data Value"
+  ) 
+  
 ```
 
 ## Problem 3
@@ -194,7 +201,11 @@ pb3_df3 =
   ggplot(aes(x = hour, y = hr_activity, color = as.factor(day_id))) + 
   geom_point() +
   geom_line() + 
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom") +
+    labs(
+    x = "Hour",
+    y = "Activity per Hour"
+  ) 
 
 pb3_df3
 
