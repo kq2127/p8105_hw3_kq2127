@@ -43,8 +43,6 @@ instacart %>%
     breaks = c(1000, 50000, 150000)
   )
 
-#look into font size
-
 ```
 
 
@@ -147,7 +145,7 @@ pb2_df %>%
 
 Load, tidy and wrangle data. 
 ```{r}
-pb3_df = 
+pb3_df1 = 
   read_csv(
     file = "./data/accel_data.csv") %>% 
   janitor::clean_names() %>% 
@@ -163,15 +161,36 @@ pb3_df =
 After loading the accel data set and tidying it we end up with pb3_df data set. This data set has 35 observations with 1444 variables. The variables in this data set include: week, day_id, day, day_type, and multiple activity variables ranging from activity_1 to activity_1440. 
 
 ```{r}
-pb3_df %>% 
+pb3_df2 =
+  pb3_df1%>% 
   pivot_longer(
     activity_1:activity_1440,
     names_to = "minute_of_day", 
     names_prefix = "activity_",
     values_to = "activity") %>% 
   group_by(week, day_id, day, day_type) %>% 
-  summarize(total_activity = sum(activity)) %>% 
+  summarize(total_activity = sum(activity))
+
+pb3_df2 %>% 
   knitr::kable()
+
 ```
 
 Some trends I noticed were that Fridays have the most actiivty while saturdays have the least activity. The patient was more active during the first 3 weeks compared to the last two weeks of the study.
+
+```{r}
+pb3_df3 =
+  pb3_df1%>% 
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "minute_of_day", 
+    names_prefix = "activity_",
+    values_to = "activity") %>% 
+  #group_by(minute_of_day, day_id) %>% 
+  #summarize(activity) %>% 
+  ggplot(aes(x = minute_of_day, y = activity, color = day)) + 
+  geom_point() +
+  geom_line() + 
+  theme(legend.position = "bottom")
+```
+
