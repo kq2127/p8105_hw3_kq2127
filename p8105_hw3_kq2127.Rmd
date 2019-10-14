@@ -23,7 +23,8 @@ instacart %>%
   summarize(n_obs = n()) %>% 
   arrange(desc(n_obs))
 ```
-Data set instacart has 1384617 observations and 15 variables.There are 134 aisles, and aisle number 83 (fresh vegetables) has the most items ordered from (150609).
+Data set instacart has 1384617 observations and 15 variables.
+There are 134 aisles, and aisle number 83 (fresh vegetables) has the most items ordered from (150609).
 
 ```{r}
 
@@ -119,7 +120,8 @@ pb2_df %>%
 
 ```
 
-In 2002 the following states were observed at 7 or more locations: CT, FL, MA, NC, NJ and PA. In 2010 the following states were observed at 7 or more locations:CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX and WA. 
+In 2002 the following states were observed at 7 or more locations: CT, FL, MA, NC, NJ and PA. 
+In 2010 the following states were observed at 7 or more locations:CA, CO, FL, MA, MD, NC, NE, NJ, NY, OH, PA, SC, TX and WA. 
 ```{r}
 pb2_df %>% 
   filter(response == "Excellent") %>% 
